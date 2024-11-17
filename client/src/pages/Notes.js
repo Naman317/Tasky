@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './Notes.css';
@@ -9,19 +9,8 @@ function Notes() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPriority, setSelectedPriority] = useState('Low');
 
-  useEffect(() => {
-    fetchNotes();
-  }, [searchTerm, selectedPriority]);
-
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
-
-  const handleSearchClick = () => {
-    fetchNotes(); // Fetch notes when search button is clicked
-  };
-
-  const fetchNotes = async () => {
+  // Memoize fetchNotes function
+  const fetchNotes = useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get('http://localhost:5000/api/notes', {
@@ -32,6 +21,18 @@ function Notes() {
     } catch (error) {
       console.error('Failed to fetch notes', error);
     }
+  }, [searchTerm, selectedPriority]);  // Adding dependencies
+
+  useEffect(() => {
+    fetchNotes();
+  }, [fetchNotes]);  // Adding fetchNotes as dependency to useEffect
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleSearchClick = () => {
+    fetchNotes(); // Fetch notes when search button is clicked
   };
 
   const handleChange = (e) => {
@@ -84,7 +85,7 @@ function Notes() {
       const content = lowerCommand.replace('create note', '').trim();
       if (content) {
         setNewNote({ content, priority: selectedPriority });
-        handleCreateNote();
+        // handleCreateNote();
       } else {
         alert('No content detected for the note.');
       }
@@ -156,7 +157,7 @@ function Notes() {
             value={searchTerm}
             onChange={handleSearchChange}
           />
-          <button onClick={handleSearchClick}>Search Note</button> {/* Trigger search on click */}
+          <button onClick={handleSearchClick}>Search Note</button>
         </section>
 
         <section className="note-form">
