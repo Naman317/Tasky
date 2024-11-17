@@ -1,0 +1,70 @@
+.dashboard {
+  display: flex;
+  height: 100vh;
+  background-color: #f9f9f9;
+}
+
+.sidebar {
+  width: 220px;
+  background: #333;
+  color: #fff;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar a {
+  display: block;
+  padding: 12px 15px;
+  margin: 8px 0;
+  text-decoration: none;
+  color: #ddd;
+  font-weight: 500;
+  transition: background 0.3s, color 0.3s;
+  border-radius: 4px;
+}
+
+.sidebar a:hover {
+  background: #444;
+  color: #fff;
+}
+
+.sidebar button {
+  display: block;
+  margin-top: 15px;
+  padding: 12px;
+  width: 100%;
+  background: #e63946;
+  color: white;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+.sidebar button:hover {
+  background: #d62828;
+}
+
+.main {
+  flex: 1;
+  padding: 25px;
+  background-color: #fff;
+  border-radius: 8px;
+  margin: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-users input {
+  margin-right: 10px;
+  padding: 10px;
+  width: 80%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  transition: border 0.3s;
+}
+
+.search-users input:focus {
+  border-color: #333;
+}

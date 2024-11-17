@@ -1,0 +1,122 @@
+.todo {
+  display: flex;
+  font-family: Arial, sans-serif;
+}
+
+.sidebar {
+  width: 220px;
+  background-color: #f7f7f7;
+  
+  height: 100vh;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar a {
+  display: block;
+  padding: 12px 15px;
+  color: #f3e7e7;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 4px;
+  transition: background 0.3s, padding-left 0.3s;
+  margin-bottom: 8px;
+}
+
+.sidebar a:hover {
+  background-color: #090909;
+  padding-left: 20px;
+}
+
+main {
+  flex: 1;
+  padding: 30px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  margin: 20px;
+}
+
+h1, h2 {
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.search-tasks, .task-form, .tasks-list {
+  margin-bottom: 25px;
+}
+
+.search-tasks input[type="text"], 
+.task-form input[type="text"], 
+.task-form select {
+  padding: 10px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 280px;
+  transition: border-color 0.3s;
+}
+
+.search-tasks input[type="text"]:focus, 
+.task-form input[type="text"]:focus, 
+.task-form select:focus {
+  border-color: #007bff;
+}
+
+.search-tasks button, .task-form button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.search-tasks button:hover, .task-form button:hover {
+  background-color: #0056b3;
+}
+
+.tasks-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.tasks-list li {
+  padding: 15px;
+  margin-bottom: 12px;
+  background-color: #fafafa;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.3s;
+}
+
+.tasks-list li:hover {
+  background-color: #f0f0f0;
+}
+
+.tasks-list li p {
+  margin: 0;
+  font-size: 16px;
+  color: #555;
+}
+
+.tasks-list button {
+  padding: 8px 12px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.tasks-list button:hover {
+  background-color: #c82333;
+}
