@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
+import axios from '../axios';
 import { Link } from 'react-router-dom';
 import './Notes.css';
 
@@ -13,7 +13,7 @@ function Notes() {
   const fetchNotes = useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/notes', {
+      const response = await axios.get('/api/notes', {
         headers: { Authorization: `Bearer ${token}` },
         params: { search: searchTerm, priority: selectedPriority }
       });
@@ -52,7 +52,7 @@ function Notes() {
     try {
       const token = localStorage.getItem('token');
       await axios.post(
-        'http://localhost:5000/api/notes',
+        '/api/notes',
         { content: newNote.content, priority: newNote.priority },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -67,7 +67,7 @@ function Notes() {
   const handleDeleteNote = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/notes/${id}`, {
+      await axios.delete(`/api/notes/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setNotes(notes.filter(note => note._id !== id));

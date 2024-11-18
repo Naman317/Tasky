@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../axios';
 import { Link } from 'react-router-dom';
 import './Assign.css';
 
@@ -25,7 +25,7 @@ const Assign = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/tasks/assigned', {
+      const response = await axios.get('/api/tasks/assigned', {
         headers: { Authorization: `Bearer ${token}` },
         params: { search }
       });
@@ -66,7 +66,7 @@ const Assign = () => {
       }
 
       const response = await axios.post(
-        'http://localhost:5000/api/tasks',
+        '/api/tasks',
         {
           task: newTask.task,
           priority: newTask.priority,
@@ -88,7 +88,7 @@ const Assign = () => {
   const handleDeleteTask = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/tasks/${id}`, {
+      await axios.delete(`/api/tasks/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setTasks(tasks.filter(task => task._id !== id)); 
@@ -120,7 +120,7 @@ const handleUpdateTask = async () => {
     console.log('Updated Task Data:', updatedTaskData);  
 
     const response = await axios.put(
-      `http://localhost:5000/api/tasks/${editingTask._id}`,
+      `/api/tasks/${editingTask._id}`,
       updatedTaskData,
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -144,7 +144,7 @@ const handleUpdateTask = async () => {
     if (value.trim()) {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:5000/api/user/search', {
+        const response = await axios.get('/api/user/search', {
           headers: { Authorization: `Bearer ${token}` },
           params: { query: value },
         });
@@ -164,7 +164,7 @@ const handleUpdateTask = async () => {
   const handleToggleComplete = async (task) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:5000/api/tasks/${task._id}`,
+      await axios.put(`/api/tasks/${task._id}`,
         { completed: !task.completed },
         { headers: { Authorization: `Bearer ${token}` } }
       );
