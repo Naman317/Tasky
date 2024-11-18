@@ -7,10 +7,9 @@ function ToDo() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState({ task: '', priority: 'Low' });
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedPriority, setSelectedPriority] = useState('Low');
+  const [selectedPriorityFilter, setSelectedPriorityFilter] = useState('All');
   const [selectedStatus, setSelectedStatus] = useState('All');
   const [editingTask, setEditingTask] = useState(null);
-  const currentUserId = localStorage.getItem('userId');
 
   useEffect(() => {
     fetchTasks();
@@ -32,9 +31,6 @@ function ToDo() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewTask({ ...newTask, [name]: value });
-    if (name === 'priority') {
-      setSelectedPriority(value);
-    }
   };
 
   const handleCreateTask = async () => {
@@ -50,7 +46,7 @@ function ToDo() {
         { task: newTask.task, priority: newTask.priority },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setNewTask({ task: '', priority: selectedPriority });
+      setNewTask({ task: '', priority: 'Low' });
       fetchTasks();
       alert('Task created successfully!');
     } catch (error) {
@@ -75,7 +71,6 @@ function ToDo() {
   const handleEditTask = (task) => {
     setEditingTask(task);
     setNewTask({ task: task.task, priority: task.priority });
-    setSelectedPriority(task.priority);
   };
 
   const handleUpdateTask = async () => {
@@ -89,7 +84,7 @@ function ToDo() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setEditingTask(null);
-      setNewTask({ task: '', priority: selectedPriority });
+      setNewTask({ task: '', priority: 'Low' });
       fetchTasks();
       alert('Task updated successfully!');
     } catch (error) {
@@ -115,14 +110,20 @@ function ToDo() {
   const handleSearch = (e) => {
     const searchValue = e.target.value;
     setSearchTerm(searchValue);
-    fetchTasks(searchValue);  
+    fetchTasks(searchValue);
   };
 
   const filteredTasks = tasks.filter(task => {
     const term = searchTerm.toLowerCase();
-    const matchesSearchTerm = task.task.toLowerCase().includes(term) || task.priority.toLowerCase() === term;
-    const matchesStatus = selectedStatus === 'All' || (selectedStatus === 'Completed' && task.completed) || (selectedStatus === 'Pending' && !task.completed);
-    return matchesSearchTerm && matchesStatus;
+    const matchesSearchTerm = task.task.toLowerCase().includes(term);
+    const matchesPriority =
+      selectedPriorityFilter === 'All' || task.priority === selectedPriorityFilter;
+    const matchesStatus =
+      selectedStatus === 'All' ||
+      (selectedStatus === 'Completed' && task.completed) ||
+      (selectedStatus === 'Pending' && !task.completed);
+
+    return matchesSearchTerm && matchesPriority && matchesStatus;
   });
 
   return (
@@ -139,13 +140,22 @@ function ToDo() {
             type="text"
             placeholder="Search tasks"
             value={searchTerm}
-            onChange={handleSearch}  
+            onChange={handleSearch}
           />
+          <select
+            value={selectedPriorityFilter}
+            onChange={(e) => setSelectedPriorityFilter(e.target.value)}
+          >
+            <option value="All">All Priorities</option>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+          </select>
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
           >
-            <option value="All">All</option>
+            <option value="All">All Status</option>
             <option value="Completed">Completed</option>
             <option value="Pending">Pending</option>
           </select>
@@ -179,18 +189,16 @@ function ToDo() {
           <ul>
             {filteredTasks.map(task => (
               <li key={task._id}>
-                <input 
-                  type="checkbox" 
-                  checked={task.completed} 
-                  onChange={() => handleToggleComplete(task)} 
+                <input
+                  type="checkbox"
+                  checked={task.completed}
+                  onChange={() => handleToggleComplete(task)}
                 />
                 <p>{task.task}</p>
                 <p>Priority: {task.priority}</p>
                 <p>Status: {task.completed ? 'Completed' : 'Pending'}</p>
 
-                {task.isAssignedByAdmin && (
-                  <p>Assigned by Admin</p>
-                )}
+                {task.isAssignedByAdmin && <p>Assigned by Admin</p>}
 
                 <button onClick={() => handleEditTask(task)}>Edit</button>
                 <button onClick={() => handleDeleteTask(task._id)}>Delete</button>
