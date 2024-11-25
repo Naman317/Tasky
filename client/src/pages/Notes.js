@@ -9,7 +9,6 @@ function Notes() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPriority, setSelectedPriority] = useState('Low');
 
-  // Memoize fetchNotes function
   const fetchNotes = useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
@@ -21,18 +20,18 @@ function Notes() {
     } catch (error) {
       console.error('Failed to fetch notes', error);
     }
-  }, [searchTerm, selectedPriority]);  // Adding dependencies
+  }, [searchTerm, selectedPriority]);  
 
   useEffect(() => {
     fetchNotes();
-  }, [fetchNotes]);  // Adding fetchNotes as dependency to useEffect
+  }, [fetchNotes]);  
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
   const handleSearchClick = () => {
-    fetchNotes(); // Fetch notes when search button is clicked
+    fetchNotes(); 
   };
 
   const handleChange = (e) => {
