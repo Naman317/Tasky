@@ -17,7 +17,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: ["http://localhost:3000","https://genuine-sunburst-112cd2.netlify.app/"],
     methods: ["GET", "POST", "DELETE", "PUT","PATCH"],
     credentials: true,
   })
