@@ -80,7 +80,7 @@ const Tasks = () => {
 
   const handleVoiceCommand = async (command) => {
     const lowerCommand = command.toLowerCase().trim();
-    
+
     // View Toggling
     if (lowerCommand.includes("switch to list view") || lowerCommand.includes("list view")) {
       setView("list");
@@ -128,9 +128,9 @@ const Tasks = () => {
       if (match) {
         const titleToFind = match[1].trim();
         let targetStage = match[2].trim();
-        
+
         if (targetStage === "to do") targetStage = "todo";
-        
+
         if (!["todo", "in progress", "completed"].includes(targetStage)) {
           toast.error(`Unknown stage "${targetStage}". Try "todo", "in progress", or "completed".`);
           return;
@@ -145,7 +145,7 @@ const Tasks = () => {
             }).unwrap();
             toast.success(`Moved "${taskToMove.title}" to ${targetStage}`);
           } catch (err) {
-             toast.error(err?.data?.message || "Failed to move task");
+            toast.error(err?.data?.message || "Failed to move task");
           }
         } else {
           toast.error(`Could not find task "${titleToFind}"`);
@@ -158,15 +158,15 @@ const Tasks = () => {
       const titleToFind = lowerCommand.replace("mark ", "").replace(" as completed", "").trim();
       const taskToMove = data?.tasks?.find(t => t.title.toLowerCase() === titleToFind);
       if (taskToMove) {
-          try {
-            await updateTask({
-              id: taskToMove._id,
-              data: { ...taskToMove, stage: "completed", team: taskToMove.team?.map(t => t._id || t) }
-            }).unwrap();
-            toast.success(`Marked "${taskToMove.title}" as completed`);
-          } catch (err) {
-             toast.error(err?.data?.message || "Failed to mark as completed");
-          }
+        try {
+          await updateTask({
+            id: taskToMove._id,
+            data: { ...taskToMove, stage: "completed", team: taskToMove.team?.map(t => t._id || t) }
+          }).unwrap();
+          toast.success(`Marked "${taskToMove.title}" as completed`);
+        } catch (err) {
+          toast.error(err?.data?.message || "Failed to mark as completed");
+        }
       } else {
         toast.error(`Could not find task "${titleToFind}"`);
       }
@@ -204,7 +204,7 @@ const Tasks = () => {
     if (lowerCommand.startsWith("delete task ")) {
       const titleToFind = lowerCommand.replace("delete task ", "").trim();
       const taskToDelete = data?.tasks?.find(t => t.title.toLowerCase() === titleToFind);
-      
+
       if (taskToDelete) {
         if (taskToDelete.createdByRole === "admin" && !user?.isAdmin) {
           toast.error("You are not authorized to trash this admin-created task.");
@@ -222,7 +222,7 @@ const Tasks = () => {
       return;
     }
 
-    
+
     // ── Bulk: Delete All Tasks ──────────────────────────────────────────
     if (
       lowerCommand.includes("delete all tasks") ||
@@ -343,7 +343,7 @@ const Tasks = () => {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
             <input
               type="text"
-              placeholder="Search tasks..."
+              placeholder="Search tasks... "
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 bg-background border rounded-lg focus:ring-2 focus:ring-primary/20 outline-none transition-all"
